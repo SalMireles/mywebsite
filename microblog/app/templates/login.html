@@ -9,6 +9,7 @@
         </div>
     </div>
     <br>
+{% endblock app_content %}
     <!--
     Expose the link below to register new users on the site.
     <p>
@@ -18,12 +19,4 @@
         Forgot Your Password?
         <a href="{{ url_for('reset_password_request') }}">Click to Reset It</a>
     </p>
-
-{%- block footer %}
-    <footer>
-         By signing in you agree to all terms and conditions
-    </footer>
-
-{%- endblock footer %}
     -->
-{% endblock %}
