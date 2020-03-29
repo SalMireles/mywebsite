@@ -4,9 +4,10 @@ from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
-    ResetPasswordRequestForm, ResetPasswordForm
+    ResetPasswordRequestForm, ResetPasswordForm, ToolsForm
 from app.models import User, Post
 from app.email import send_password_reset_email
+from app.processing import do_calculation
 
 @app.before_request
 def before_request():
@@ -89,6 +90,38 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+
+@app.route('/tools', methods=['GET', 'POST'])
+def tools():
+    errors = ""
+    if request.method == "POST":
+        flash('Post Method')
+        number1 = None
+        number2 = None
+        try:
+            number1 = float(request.form["number1"])
+        except:
+            errors += "<p>{!r} is not a number.</p>\n".format(request.form["number1"])
+        try:
+            number2 = float(request.form["number2"])
+        except:
+            errors += "<p>{!r} is not a number.</p>\n".format(request.form["number2"])
+
+        if number1 is not None and number2 is not None:
+            result = do_calculation(number1, number2)
+            return '''
+                <html>
+                    <body>
+                        <p>The result is {result}</p>
+                    </body>
+                </html>
+            '''.format(result=result)
+        else:
+            return render_template('tools_page.html', title='Edit Profile')
+
+    if request.method == "GET":
+        return render_template('tools_page.html', title='Edit Profile')
 
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])

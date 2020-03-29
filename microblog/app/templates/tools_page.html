@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+        <html>
+                    <body>
+                        <p>Enter your numbers:</p>
+                        <form method="post" action="{{ url_for('tools')}} ">
+                            <p><input name="number1" /></p>
+                            <p><input name="number2" /></p>
+                            <p><input type="submit" value="Do calculation" /></p>
+                        </form>
+                    </body>
+                </html>
+{% endblock %}
